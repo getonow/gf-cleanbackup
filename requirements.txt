@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+plotly
+pydantic
+kaleido
+gspread
+google-auth
+openai 
