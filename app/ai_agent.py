@@ -12,15 +12,12 @@ import json
 # Set up OpenAI client for v1+ API
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# Google Sheets setup (load from credential2.json for local dev)
+# Google Sheets setup (load from environment variable for Railway/prod)
 SHEET_ID = "1gSaOWf_KyZPEzjvnYrUm2KxRzUe9-UqrMBdtKQOmn3U"
 SHEET_NAME = "MASTER_FILE_ACMECo"
-
-SHEET_ID = "1gSaOWf_KyZPEzjvnYrUm2KxRzUe9-UqrMBdtKQOmn3U"
-SHEET_NAME = "MASTER_FILE_ACMECo"
-CREDENTIALS_PATH = os.path.join(os.path.dirname(__file__), "../credential2.json")
 SCOPES = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = Credentials.from_service_account_file(CREDENTIALS_PATH, scopes=SCOPES)
+credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS_JSON"])
+creds = Credentials.from_service_account_info(credentials_info, scopes=SCOPES)
 gc = gspread.authorize(creds)
 sh = gc.open_by_key(SHEET_ID)
 worksheet = sh.worksheet(SHEET_NAME)
