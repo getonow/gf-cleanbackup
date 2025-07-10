@@ -16,7 +16,11 @@ client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 SHEET_ID = "1gSaOWf_KyZPEzjvnYrUm2KxRzUe9-UqrMBdtKQOmn3U"
 SHEET_NAME = "MASTER_FILE_ACMECo"
 SCOPES = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-credentials_info = json.loads(os.environ["GOOGLE_CREDENTIALS_JSON"])
+raw_json = os.environ["GOOGLE_CREDENTIALS_JSON"]
+credentials_info = json.loads(raw_json)
+# Fix the private_key field to have real newlines
+if "private_key" in credentials_info:
+    credentials_info["private_key"] = credentials_info["private_key"].replace("\\n", "\n")
 creds = Credentials.from_service_account_info(credentials_info, scopes=SCOPES)
 gc = gspread.authorize(creds)
 sh = gc.open_by_key(SHEET_ID)
