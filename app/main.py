@@ -17,4 +17,9 @@ app.add_middleware(
 @app.post("/chat/", response_model=ChatResponse)
 def chat(request: ChatRequest):
     print(f"Received request: {request.message}")
-    return generate_response(request.message) 
+    return generate_response(request.message)
+
+@app.get("/health")
+def health():
+    print("Health check hit")
+    return {"status": "ok"} 
